@@ -4,6 +4,9 @@ import { View } from 'react-native';
 import {
   Headline, TextInput, HelperText, Button,
 } from 'react-native-paper';
+import { connect } from 'react-redux';
+
+import { login } from '@services/auth/authActions';
 
 type Props = {};
 type State = {
@@ -73,4 +76,11 @@ class LoginScreen extends Component<Props, State> {
   }
 }
 
-export default LoginScreen;
+const actions = {
+  login,
+};
+
+export default connect(
+  null,
+  actions,
+)(LoginScreen);

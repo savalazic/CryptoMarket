@@ -12,7 +12,7 @@ import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import Loading from './components/Loading';
+import Loading from '@components/Loading';
 
 import { theme } from './theme';
 import App from './App';
