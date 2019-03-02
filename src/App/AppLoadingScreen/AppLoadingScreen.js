@@ -3,7 +3,7 @@ import { View, ActivityIndicator } from 'react-native';
 
 class AppLoadingScreen extends Component {
   state = {
-    isLoggedIn: true,
+    isLoggedIn: false,
   };
 
   componentDidMount() {
