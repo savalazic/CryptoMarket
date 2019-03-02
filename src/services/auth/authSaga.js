@@ -5,7 +5,11 @@ import authApi from './authApi';
 import { loginSuccess, loginFailure, ActionTypes } from './authActions';
 
 export function* login(action) {
-  const { response, error } = yield call(authApi.login, action.payload);
+  const { response, error } = yield call(
+    authApi.login,
+    action.payload.email,
+    action.payload.password,
+  );
 
   if (response) {
     yield put(loginSuccess(response.data));

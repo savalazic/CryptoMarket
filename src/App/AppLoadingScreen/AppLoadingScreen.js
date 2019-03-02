@@ -1,13 +1,20 @@
+// @flow
 import React, { Component } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { connect } from 'react-redux';
+import { View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
+import { type InjectedProps } from 'react-navigation-tabs';
 
-class AppLoadingScreen extends Component {
-  state = {
-    isLoggedIn: false,
-  };
+import { getUser } from '@services/auth/authSelectors';
 
+type Props = InjectedProps & {
+  user: any,
+};
+
+class AppLoadingScreen extends Component<Props> {
   componentDidMount() {
-    this.props.navigation.navigate(this.state.isLoggedIn ? 'App' : 'Auth');
+    const { user } = this.props;
+    this.props.navigation.navigate(user ? 'App' : 'Auth');
   }
 
   render() {
@@ -26,4 +33,8 @@ class AppLoadingScreen extends Component {
   }
 }
 
-export default AppLoadingScreen;
+const mapStateToProps = state => ({
+  user: getUser(state),
+});
+
+export default connect(mapStateToProps)(AppLoadingScreen);

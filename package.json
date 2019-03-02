@@ -13,7 +13,6 @@
   "dependencies": {
     "@redux-saga/testing-utils": "^1.0.1",
     "axios": "^0.18.0",
-    "base-64": "^0.1.0",
     "lodash": "^4.17.11",
     "react": "16.6.3",
     "react-native": "0.58.6",

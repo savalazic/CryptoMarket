@@ -2,11 +2,15 @@ export const ActionTypes = {
   LOGIN_REQUEST: 'LOGIN_REQUEST',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
   LOGIN_FAILURE: 'LOGIN_FAILURE',
+  LOGOUT: 'LOGOUT',
 };
 
-export const login = user => ({
+export const login = (email, password) => ({
   type: ActionTypes.LOGIN_REQUEST,
-  payload: user,
+  payload: {
+    email,
+    password,
+  },
 });
 
 export const loginSuccess = user => ({
@@ -17,4 +21,8 @@ export const loginSuccess = user => ({
 export const loginFailure = error => ({
   type: ActionTypes.LOGIN_FAILURE,
   payload: error,
+});
+
+export const logout = () => ({
+  type: ActionTypes.LOGOUT,
 });

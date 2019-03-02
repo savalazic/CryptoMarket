@@ -23,6 +23,8 @@
 <PROJECT_ROOT>/node_modules/react-native-gesture-handler/.*
 <PROJECT_ROOT>/node_modules/react-navigation/.*
 <PROJECT_ROOT>/node_modules/react-native-paper/.*
+<PROJECT_ROOT>/node_modules/@callstack/.*
+<PROJECT_ROOT>/node_modules/redux-persist/.*
 
 [include]
 
@@ -34,7 +36,6 @@ node_modules/react-native/flow-github/
 [options]
 emoji=true
 
-module.system.node.resolve_dirname=src
 module.name_mapper='^@services\/\(.*\)$' -> '<PROJECT_ROOT>/src/services/\1'
 module.name_mapper='^@components\/\(.*\)$' -> '<PROJECT_ROOT>/src/components/\1'
 

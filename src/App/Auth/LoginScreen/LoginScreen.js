@@ -7,8 +7,13 @@ import {
 import { connect } from 'react-redux';
 
 import { login } from '@services/auth/authActions';
+import { getLoginError } from '@services/auth/authSelectors';
 
-type Props = {};
+type Props = {
+  login: (email: string, password: string) => void,
+  loginError: string,
+};
+
 type State = {
   email: string,
   password: string,
@@ -24,7 +29,11 @@ class LoginScreen extends Component<Props, State> {
 
   onChangePassword = (password: string) => this.setState({ password });
 
+  onSubmit = () => this.props.login(this.state.email, this.state.password);
+
   render() {
+    const { loginError } = this.props;
+
     return (
       <View
         style={{
@@ -34,10 +43,11 @@ class LoginScreen extends Component<Props, State> {
           paddingVertical: 60,
         }}
       >
-        <Headline style={{ textAlign: 'center' }}>Login!</Headline>
+        <Headline style={{ textAlign: 'center' }}>Welcome</Headline>
         <View>
           <View>
             <TextInput
+              autoCapitalize="none"
               label="Email"
               value={this.state.email}
               onChangeText={this.onChangeEmail}
@@ -53,6 +63,7 @@ class LoginScreen extends Component<Props, State> {
           </View>
           <View>
             <TextInput
+              autoCapitalize="none"
               label="Password"
               value={this.state.password}
               onChangeText={this.onChangePassword}
@@ -68,19 +79,36 @@ class LoginScreen extends Component<Props, State> {
             </HelperText>
           </View>
         </View>
-        <Button style={{ padding: 15 }} mode="contained">
-          Sign In
-        </Button>
+        <View>
+          <HelperText
+            type="error"
+            visible={loginError}
+            style={{ textAlign: 'center', marginBottom: 20 }}
+          >
+            {loginError}
+          </HelperText>
+          <Button
+            style={{ padding: 15 }}
+            mode="contained"
+            onPress={this.onSubmit}
+          >
+            Sign In
+          </Button>
+        </View>
       </View>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loginError: getLoginError(state),
+});
 
 const actions = {
   login,
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   actions,
 )(LoginScreen);

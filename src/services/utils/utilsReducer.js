@@ -15,8 +15,7 @@ export const saveError = (action) => {
     const [, requestName, requestState] = matches;
     if (requestState === 'FAILURE') {
       return {
-        // @TODO: see what error field we should put here
-        [requestName]: action.payload,
+        [requestName]: action.payload.message,
       };
     }
     delete [requestName];
