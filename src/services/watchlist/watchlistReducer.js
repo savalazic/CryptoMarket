@@ -11,6 +11,11 @@ const watchlistReducer = (state = initialState, action) => {
         ...state,
         symbols: action.payload,
       };
+    case ActionTypes.ADD_TO_WATCHLIST_SUCCESS:
+      return {
+        ...state,
+        symbols: action.payload,
+      };
     default:
       return state;
   }

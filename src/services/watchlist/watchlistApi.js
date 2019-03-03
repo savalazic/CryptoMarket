@@ -9,6 +9,21 @@ const watchlist = {
     })
     .then(response => ({ response }))
     .catch(error => ({ error })),
+  addToWatchlist: (accountId, symbolId, token, isFollowing) => api
+    .put(
+      `accounts/${accountId}/watchlist/${symbolId}`,
+      {
+        following: isFollowing,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+    .then(response => ({ response }))
+    .catch(error => ({ error })),
 };
 
 export default watchlist;

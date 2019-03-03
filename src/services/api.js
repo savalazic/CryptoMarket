@@ -37,6 +37,10 @@ const api = {
     const url = `${API_ROOT}/${resourceUrl}`;
     return axios.post(url, newResource, options);
   },
+  put: (resourceUrl, newResource, options = {}) => {
+    const url = `${API_ROOT}/${resourceUrl}`;
+    return axios.put(url, newResource, options);
+  },
   remove: (resourceUrl, resourceId) => {
     const url = `${API_ROOT}/${resourceUrl}/${resourceId || ''}`;
     return axios.delete(url);
