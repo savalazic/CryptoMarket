@@ -1,5 +1,6 @@
 import mapKeys from 'lodash/mapKeys';
 import assign from 'lodash/assign';
+import { omit } from '@utils/objectUtils';
 import { ActionTypes } from './symbolActions';
 
 export const initialState = {
@@ -27,9 +28,22 @@ const symbolReducer = (state = initialState, action) => {
         watchlist: assign({}, {}, mapKeys(action.payload, 'id')),
       };
     case ActionTypes.ADD_TO_WATCHLIST_SUCCESS:
+      if (action.payload.isFollowing) {
+        return {
+          ...state,
+          watchlist: assign({}, state.watchlist, {
+            [action.payload.id]: action.payload,
+          }),
+          symbols: assign({}, state.symbols, {
+            [action.payload.id]: action.payload,
+          }),
+        };
+      }
+
       return {
         ...state,
-        watchlist: assign({}, state.watchlist, {
+        watchlist: omit(state.watchlist, action.payload.id),
+        symbols: assign({}, state.symbols, {
           [action.payload.id]: action.payload,
         }),
       };

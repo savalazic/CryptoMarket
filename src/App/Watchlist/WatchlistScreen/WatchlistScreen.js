@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import { type NavigationScreenProp } from 'react-navigation';
 import { View } from 'react-native';
 
-import { getWatchlist } from '@services/symbol/symbolActions';
+import { getWatchlist, addToWatchlist } from '@services/symbol/symbolActions';
 import {
   getSymbolsFromWatchlistArraySelector,
-  getSymbolsFromWatchlistSelector,
   getWatchlistLoading,
 } from '@services/symbol/symbolSelectors';
 import { getUserAccountId } from '@services/user/userSelectors';
@@ -23,6 +22,7 @@ type Props = {
   isLoadingWatchlist: boolean,
   symbolsFromWatchlist: Symbols,
   navigation: NavigationScreenProp<{}>,
+  addToWatchlist: (accountId: string, symbolId: string) => void,
 };
 
 class WatchlistScreen extends Component<Props> {
@@ -34,14 +34,21 @@ class WatchlistScreen extends Component<Props> {
     this.props.navigation.navigate('SingleSymbol', symbol);
   };
 
+  handleFavoritePress = (symbol: Symbol) => {
+    this.props.addToWatchlist(this.props.userAccountId, symbol.id);
+  };
+
   render() {
+    const { isLoadingWatchlist, symbolsFromWatchlist } = this.props;
+
     return (
       <View style={{ flex: 1 }}>
-        <LoadingContainer isLoading={this.props.isLoadingWatchlist}>
+        <LoadingContainer isLoading={isLoadingWatchlist}>
           <View style={{ width: '100%' }}>
             <SymbolList
-              symbols={this.props.symbolsFromWatchlist}
+              symbols={symbolsFromWatchlist}
               onSymbolPress={this.handlePressSymbol}
+              onFavoritePress={this.handleFavoritePress}
             />
           </View>
         </LoadingContainer>
@@ -56,7 +63,7 @@ const mapStateToProps = state => ({
   isLoadingWatchlist: getWatchlistLoading(state),
 });
 
-const actions = { getWatchlist };
+const actions = { getWatchlist, addToWatchlist };
 
 export default connect(
   mapStateToProps,

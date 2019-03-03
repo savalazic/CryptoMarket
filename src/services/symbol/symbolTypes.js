@@ -6,6 +6,7 @@ export type Symbol = {
     ask: number,
     bid: number,
   },
+  isFollowing: boolean,
 };
 
 export type Symbols = Symbol[];

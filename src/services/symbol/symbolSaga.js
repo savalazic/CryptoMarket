@@ -13,6 +13,7 @@ import {
   addToWatchlistSuccess,
   addToWatchlistFailure,
 } from './symbolActions';
+import { getSymbolsMapSelector } from './symbolSelectors';
 import { getToken } from '../auth/authSelectors';
 import symbolApi from './symbolApi';
 
@@ -49,6 +50,7 @@ export function* getSymbol(action) {
 
 export function* getWatchlist(action) {
   const token = yield select(getToken);
+
   const { response, error } = yield call(
     symbolApi.getWatchlist,
     action.payload,
@@ -64,16 +66,23 @@ export function* getWatchlist(action) {
 
 export function* addToWatchlist(action) {
   const token = yield select(getToken);
+  const symbols = yield select(getSymbolsMapSelector);
+  const symbol = symbols[action.payload.symbolId];
+
   const { response, error } = yield call(
     symbolApi.addToWatchlist,
     action.payload.accountId,
     action.payload.symbolId,
     token,
-    true,
+    !symbol.isFollowing,
   );
 
   if (response) {
-    yield put(addToWatchlistSuccess(response.data));
+    const symbolData = {
+      ...response.data,
+      isFollowing: !symbol.isFollowing,
+    };
+    yield put(addToWatchlistSuccess(symbolData));
   } else {
     yield put(addToWatchlistFailure(error.response.data));
   }

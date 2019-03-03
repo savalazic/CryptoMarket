@@ -23,7 +23,7 @@ const AppNavigator = createMaterialBottomTabNavigator(
       screen: WatchlistStack,
       navigationOptions: () => ({
         tabBarIcon: props => setTabBarIcon('favorite', props),
-        tabBarLabel: 'Favourites',
+        tabBarLabel: 'Favorites',
       }),
     },
   },

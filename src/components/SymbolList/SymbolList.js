@@ -9,7 +9,7 @@ import type { Symbol, Symbols } from '@services/symbol/symbolTypes';
 
 type Props = {
   onSymbolPress: (symbol: Symbol) => void,
-  onFavouritePress: (symbol: Symbol) => void,
+  onFavoritePress: (symbol: Symbol) => void,
   symbols: Symbols,
 };
 
@@ -39,8 +39,8 @@ class SymbolList extends Component<Props> {
     this.props.onSymbolPress(symbol);
   };
 
-  onFavouritePress = (symbol: Symbol) => {
-    this.props.onFavouritePress(symbol);
+  onFavoritePress = (symbol: Symbol) => {
+    this.props.onFavoritePress(symbol);
   };
 
   renderItem = ({ item }: { item: Symbol }) => (
@@ -50,8 +50,8 @@ class SymbolList extends Component<Props> {
         <View style={styles.symbol_actions}>
           <Text>${item.price.ask}</Text>
           <IconButton
-            icon="favorite"
-            onPress={() => this.onFavouritePress(item)}
+            icon={`favorite${!item.isFollowing ? '-border' : ''}`}
+            onPress={() => this.onFavoritePress(item)}
           />
         </View>
       </View>
