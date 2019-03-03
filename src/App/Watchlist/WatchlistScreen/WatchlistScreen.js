@@ -1,7 +1,21 @@
+// @flow
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Text, View } from 'react-native';
 
-class WatchlistScreen extends Component {
+import { getWatchlist } from '@services/watchlist/watchlistActions';
+import { getUserAccountId } from '@services/user/userSelectors';
+
+type Props = {
+  userAccountId: string,
+  getWatchlist: (userAccountId: string) => void,
+};
+
+class WatchlistScreen extends Component<Props> {
+  componentDidMount() {
+    this.props.getWatchlist(this.props.userAccountId);
+  }
+
   render() {
     return (
       <View
@@ -18,4 +32,13 @@ class WatchlistScreen extends Component {
   }
 }
 
-export default WatchlistScreen;
+const mapStateToProps = state => ({
+  userAccountId: getUserAccountId(state),
+});
+
+const actions = { getWatchlist };
+
+export default connect(
+  mapStateToProps,
+  actions,
+)(WatchlistScreen);

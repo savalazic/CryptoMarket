@@ -3,7 +3,7 @@ import { NavigationActions } from 'react-navigation';
 
 import authApi from './authApi';
 import { ActionTypes, loginSuccess, loginFailure } from './authActions';
-import { getUser } from '../user/userActions';
+import { getUserInfo } from '../user/userActions';
 
 export function* login(action) {
   const { response, error } = yield call(
@@ -14,7 +14,7 @@ export function* login(action) {
 
   if (response) {
     yield put(loginSuccess(response.data));
-    yield put(getUser());
+    yield put(getUserInfo());
     yield put(NavigationActions.navigate({ routeName: 'App' }));
   } else {
     yield put(loginFailure(error.response.data));

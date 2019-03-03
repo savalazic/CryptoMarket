@@ -1,19 +1,19 @@
 export const ActionTypes = {
-  GET_USER_REQUEST: 'GET_USER_REQUEST',
-  GET_USER_SUCCESS: 'GET_USER_SUCCESS',
-  GET_USER_FAILURE: 'GET_USER_FAILURE',
+  GET_USER_INFO_REQUEST: 'GET_USER_INFO_REQUEST',
+  GET_USER_INFO_SUCCESS: 'GET_USER_INFO_SUCCESS',
+  GET_USER_INFO_FAILURE: 'GET_USER_INFO_FAILURE',
 };
 
-export const getUser = () => ({
-  type: ActionTypes.GET_USER_REQUEST,
+export const getUserInfo = () => ({
+  type: ActionTypes.GET_USER_INFO_REQUEST,
 });
 
-export const getUserSuccess = user => ({
-  type: ActionTypes.GET_USER_SUCCESS,
+export const getUserInfoSuccess = user => ({
+  type: ActionTypes.GET_USER_INFO_SUCCESS,
   payload: user,
 });
 
-export const getUserFailure = error => ({
-  type: ActionTypes.GET_USER_FAILURE,
+export const getUserInfoFailure = error => ({
+  type: ActionTypes.GET_USER_INFO_FAILURE,
   payload: error,
 });

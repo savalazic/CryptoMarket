@@ -1,8 +1,8 @@
 import api from '../api';
 
-const userApi = {
-  getUserInfo: token => api
-    .get('users/me', {
+const watchlist = {
+  getWatchlist: (accountId, token) => api
+    .get(`accounts/${accountId}/watchlist`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -11,4 +11,4 @@ const userApi = {
     .catch(error => ({ error })),
 };
 
-export default userApi;
+export default watchlist;
