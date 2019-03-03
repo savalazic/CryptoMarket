@@ -27,7 +27,7 @@ export const createQueryString = (params) => {
 };
 
 const api = {
-  get: (resourceUrl, params = {}, resourceId, options = {}) => {
+  get: (resourceUrl, options = {}, resourceId, params = {}) => {
     const id = resourceId ? `/${resourceId}` : '';
     const url = `${API_ROOT}/${resourceUrl + id + createQueryString(params)}`;
 

@@ -5,16 +5,18 @@ import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { type InjectedProps } from 'react-navigation-tabs';
 
-import { getUser } from '@services/auth/authSelectors';
+import { getToken } from '@services/auth/authSelectors';
+import { getUser } from '@services/user/userActions';
 
 type Props = InjectedProps & {
-  user: any,
+  accessToken: string,
 };
 
 class AppLoadingScreen extends Component<Props> {
   componentDidMount() {
-    const { user } = this.props;
-    this.props.navigation.navigate(user ? 'App' : 'Auth');
+    const { accessToken } = this.props;
+    this.props.navigation.navigate(accessToken ? 'App' : 'Auth');
+    this.props.getUser();
   }
 
   render() {
@@ -34,7 +36,12 @@ class AppLoadingScreen extends Component<Props> {
 }
 
 const mapStateToProps = state => ({
-  user: getUser(state),
+  accessToken: getToken(state),
 });
 
-export default connect(mapStateToProps)(AppLoadingScreen);
+const actions = { getUser };
+
+export default connect(
+  mapStateToProps,
+  actions,
+)(AppLoadingScreen);

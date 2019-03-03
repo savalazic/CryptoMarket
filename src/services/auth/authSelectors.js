@@ -2,7 +2,8 @@ import { createSelector } from 'reselect';
 import { getAllErrorsFromState, getErrorStatus } from '../utils/utils';
 import { ActionTypes } from './authActions';
 
-export const getUser = state => state.services.auth.user;
+export const getAuth = state => state.services.auth;
+export const getToken = state => state.services.auth.access_token;
 
 export const getLoginError = createSelector(
   getAllErrorsFromState,
