@@ -7,10 +7,10 @@ import { Button } from 'react-native-paper';
 
 import { logout } from '@services/auth/authActions';
 import { getUserInfoId, getUserAccountId } from '@services/user/userSelectors';
-import { getSymbols } from '@services/symbol/symbolActions';
-import { addToWatchlist } from '@services/watchlist/watchlistActions';
+import { getSymbols, addToWatchlist } from '@services/symbol/symbolActions';
 import {
   getSymbolsSelector,
+  getSymbolsArraySelector,
   getSymbolsLoading,
 } from '@services/symbol/symbolSelectors';
 
@@ -39,10 +39,7 @@ class SymbolsScreen extends Component<Props> {
   };
 
   handleFavouritePress = (symbol: Symbol) => {
-    this.props.addToWatchlist(
-      this.props.userAccountId,
-      symbol.id,
-    );
+    this.props.addToWatchlist(this.props.userAccountId, symbol.id);
   };
 
   render() {
@@ -66,7 +63,7 @@ class SymbolsScreen extends Component<Props> {
 const mapStateToProps = state => ({
   userId: getUserInfoId(state),
   userAccountId: getUserAccountId(state),
-  symbols: getSymbolsSelector(state),
+  symbols: getSymbolsArraySelector(state),
   isLoadingSymbols: getSymbolsLoading(state),
 });
 

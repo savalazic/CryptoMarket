@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import { type NavigationScreenProp } from 'react-navigation';
 import { View } from 'react-native';
 
-import { getWatchlist } from '@services/watchlist/watchlistActions';
+import { getWatchlist } from '@services/symbol/symbolActions';
 import {
+  getSymbolsFromWatchlistArraySelector,
   getSymbolsFromWatchlistSelector,
   getWatchlistLoading,
-} from '@services/watchlist/watchlistSelectors';
+} from '@services/symbol/symbolSelectors';
 import { getUserAccountId } from '@services/user/userSelectors';
 
 import type { Symbol, Symbols } from '@services/symbol/symbolTypes';
@@ -51,7 +52,7 @@ class WatchlistScreen extends Component<Props> {
 
 const mapStateToProps = state => ({
   userAccountId: getUserAccountId(state),
-  symbolsFromWatchlist: getSymbolsFromWatchlistSelector(state),
+  symbolsFromWatchlist: getSymbolsFromWatchlistArraySelector(state),
   isLoadingWatchlist: getWatchlistLoading(state),
 });
 

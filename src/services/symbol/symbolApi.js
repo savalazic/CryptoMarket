@@ -1,14 +1,41 @@
 import api from '../api';
 
-const symbolApi = {
-  getSymbols: (userId, token) => api
-    .get(`users/${userId}/symbols`, {
+const getSymbols = (userId, token) => api
+  .get(`users/${userId}/symbols`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+const getWatchlist = (accountId, token) => api
+  .get(`accounts/${accountId}/watchlist`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+const addToWatchlist = (accountId, symbolId, token, isFollowing) => api
+  .put(
+    `accounts/${accountId}/watchlist/${symbolId}`,
+    {
+      following: isFollowing,
+    },
+    {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
-    })
-    .then(response => ({ response }))
-    .catch(error => ({ error })),
-};
+    },
+  )
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
 
-export default symbolApi;
+export default {
+  getSymbols,
+  getWatchlist,
+  addToWatchlist,
+};

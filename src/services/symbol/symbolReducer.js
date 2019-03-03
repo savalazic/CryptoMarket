@@ -1,7 +1,10 @@
+import mapKeys from 'lodash/mapKeys';
+import assign from 'lodash/assign';
 import { ActionTypes } from './symbolActions';
 
 export const initialState = {
-  symbols: [],
+  symbols: {},
+  watchlist: {},
 };
 
 const symbolReducer = (state = initialState, action) => {
@@ -9,7 +12,19 @@ const symbolReducer = (state = initialState, action) => {
     case ActionTypes.GET_SYMBOLS_SUCCESS:
       return {
         ...state,
-        symbols: action.payload,
+        symbols: assign({}, {}, mapKeys(action.payload, 'id')),
+      };
+    case ActionTypes.GET_WATCHLIST_SUCCESS:
+      return {
+        ...state,
+        watchlist: assign({}, {}, mapKeys(action.payload, 'id')),
+      };
+    case ActionTypes.ADD_TO_WATCHLIST_SUCCESS:
+      return {
+        ...state,
+        watchlist: assign({}, state.watchlist, {
+          [action.payload.id]: action.payload,
+        }),
       };
     default:
       return state;

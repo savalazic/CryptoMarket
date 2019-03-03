@@ -26,25 +26,31 @@ export const createQueryString = (params) => {
   return queryString;
 };
 
-const api = {
-  get: (resourceUrl, options = {}, resourceId, params = {}) => {
-    const id = resourceId ? `/${resourceId}` : '';
-    const url = `${API_ROOT}/${resourceUrl + id + createQueryString(params)}`;
+const get = (resourceUrl, options = {}, resourceId, params = {}) => {
+  const id = resourceId ? `/${resourceId}` : '';
+  const url = `${API_ROOT}/${resourceUrl + id + createQueryString(params)}`;
 
-    return axios.get(url, options);
-  },
-  post: (resourceUrl, newResource, options = {}) => {
-    const url = `${API_ROOT}/${resourceUrl}`;
-    return axios.post(url, newResource, options);
-  },
-  put: (resourceUrl, newResource, options = {}) => {
-    const url = `${API_ROOT}/${resourceUrl}`;
-    return axios.put(url, newResource, options);
-  },
-  remove: (resourceUrl, resourceId) => {
-    const url = `${API_ROOT}/${resourceUrl}/${resourceId || ''}`;
-    return axios.delete(url);
-  },
+  return axios.get(url, options);
 };
 
-export default api;
+const post = (resourceUrl, newResource, options = {}) => {
+  const url = `${API_ROOT}/${resourceUrl}`;
+  return axios.post(url, newResource, options);
+};
+
+const put = (resourceUrl, newResource, options = {}) => {
+  const url = `${API_ROOT}/${resourceUrl}`;
+  return axios.put(url, newResource, options);
+};
+
+const remove = (resourceUrl, resourceId) => {
+  const url = `${API_ROOT}/${resourceUrl}/${resourceId || ''}`;
+  return axios.delete(url);
+};
+
+export default {
+  get,
+  post,
+  put,
+  remove,
+};
