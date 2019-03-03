@@ -35,7 +35,7 @@ class SymbolsScreen extends Component<Props> {
   }
 
   handlePressSymbol = (symbol: Symbol) => {
-    this.props.navigation.navigate('Symbol', { symbol });
+    this.props.navigation.navigate('SingleSymbol', symbol);
   };
 
   handleFavouritePress = (symbol: Symbol) => {

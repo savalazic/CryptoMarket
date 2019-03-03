@@ -31,7 +31,7 @@ class WatchlistScreen extends Component<Props> {
   }
 
   handlePressSymbol = (symbol: Symbol) => {
-    this.props.navigation.navigate('Symbol', { symbol });
+    this.props.navigation.navigate('SingleSymbol', symbol);
   };
 
   render() {

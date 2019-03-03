@@ -10,6 +10,11 @@ export const getSymbolsLoading = createSelector(
   loaders => getLoaderStatus(loaders, ActionTypes.GET_SYMBOLS_REQUEST),
 );
 
+export const getSymbolLoading = createSelector(
+  getAllLoadersFromState,
+  loaders => getLoaderStatus(loaders, ActionTypes.GET_SYMBOL_REQUEST),
+);
+
 export const getSymbolsArraySelector = createSelector(
   getSymbolsSelector,
   symbols => map(symbols),

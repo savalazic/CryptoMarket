@@ -5,7 +5,7 @@ import SymbolScreen from './SymbolScreen';
 
 const SymbolStack = createStackNavigator({
   Symbols: SymbolsScreen,
-  Symbol: SymbolScreen,
+  SingleSymbol: SymbolScreen,
 });
 
 export default SymbolStack;

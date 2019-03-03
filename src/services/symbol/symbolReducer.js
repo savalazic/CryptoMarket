@@ -14,6 +14,13 @@ const symbolReducer = (state = initialState, action) => {
         ...state,
         symbols: assign({}, {}, mapKeys(action.payload, 'id')),
       };
+    case ActionTypes.GET_SYMBOL_SUCCESS:
+      return {
+        ...state,
+        symbols: assign({}, state.symbols, {
+          [action.payload.id]: action.payload,
+        }),
+      };
     case ActionTypes.GET_WATCHLIST_SUCCESS:
       return {
         ...state,

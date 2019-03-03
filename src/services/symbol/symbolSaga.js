@@ -6,6 +6,8 @@ import {
   ActionTypes,
   getSymbolsSuccess,
   getSymbolsFailure,
+  getSymbolSuccess,
+  getSymbolFailure,
   getWatchlistSuccess,
   getWatchlistFailure,
   addToWatchlistSuccess,
@@ -26,6 +28,22 @@ export function* getSymbols(action) {
     yield put(getSymbolsSuccess(response.data));
   } else {
     yield put(getSymbolsFailure(error.response.data));
+  }
+}
+
+export function* getSymbol(action) {
+  const token = yield select(getToken);
+  const { response, error } = yield call(
+    symbolApi.getSymbol,
+    action.payload.userId,
+    action.payload.symbolId,
+    token,
+  );
+
+  if (response) {
+    yield put(getSymbolSuccess(response.data));
+  } else {
+    yield put(getSymbolFailure(error.response.data));
   }
 }
 
@@ -63,6 +81,7 @@ export function* addToWatchlist(action) {
 
 export default function* symbolSaga() {
   yield takeEvery(ActionTypes.GET_SYMBOLS_REQUEST, getSymbols);
+  yield takeEvery(ActionTypes.GET_SYMBOL_REQUEST, getSymbol);
   yield takeEvery(ActionTypes.GET_WATCHLIST_REQUEST, getWatchlist);
   yield takeEvery(ActionTypes.ADD_TO_WATCHLIST_REQUEST, addToWatchlist);
 }

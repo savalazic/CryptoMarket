@@ -9,6 +9,15 @@ const getSymbols = (userId, token) => api
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
+const getSymbol = (userId, symbolId, token) => api
+  .get(`users/${userId}/symbols/${symbolId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
 const getWatchlist = (accountId, token) => api
   .get(`accounts/${accountId}/watchlist`, {
     headers: {
@@ -36,6 +45,7 @@ const addToWatchlist = (accountId, symbolId, token, isFollowing) => api
 
 export default {
   getSymbols,
+  getSymbol,
   getWatchlist,
   addToWatchlist,
 };

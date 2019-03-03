@@ -2,6 +2,9 @@ export const ActionTypes = {
   GET_SYMBOLS_REQUEST: 'GET_SYMBOLS_REQUEST',
   GET_SYMBOLS_SUCCESS: 'GET_SYMBOLS_SUCCESS',
   GET_SYMBOLS_FAILURE: 'GET_SYMBOLS_FAILURE',
+  GET_SYMBOL_REQUEST: 'GET_SYMBOL_REQUEST',
+  GET_SYMBOL_SUCCESS: 'GET_SYMBOL_SUCCESS',
+  GET_SYMBOL_FAILURE: 'GET_SYMBOL_FAILURE',
   GET_WATCHLIST_REQUEST: 'GET_WATCHLIST_REQUEST',
   GET_WATCHLIST_SUCCESS: 'GET_WATCHLIST_SUCCESS',
   GET_WATCHLIST_FAILURE: 'GET_WATCHLIST_FAILURE',
@@ -23,6 +26,22 @@ export const getSymbolsSuccess = symbols => ({
 
 export const getSymbolsFailure = error => ({
   type: ActionTypes.GET_SYMBOLS_FAILURE,
+  payload: error,
+});
+
+// get single symbol action creators
+export const getSymbol = (userId, symbolId) => ({
+  type: ActionTypes.GET_SYMBOL_REQUEST,
+  payload: { userId, symbolId },
+});
+
+export const getSymbolSuccess = symbol => ({
+  type: ActionTypes.GET_SYMBOL_SUCCESS,
+  payload: symbol,
+});
+
+export const getSymbolFailure = error => ({
+  type: ActionTypes.GET_SYMBOL_FAILURE,
   payload: error,
 });
 
