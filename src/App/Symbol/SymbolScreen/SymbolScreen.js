@@ -15,6 +15,10 @@ import {
 import { type Symbols } from '@services/symbol/symbolTypes';
 
 import LoadingContainer from '@components/LoadingContainer';
+import Container from '@components/Container';
+import Box from '@components/Box';
+
+import styles from './SymbolScreen.style';
 
 type Props = {
   navigation: NavigationScreenProp<{}>,
@@ -35,6 +39,7 @@ class SymbolScreen extends Component<Props> {
     } = this.props;
     const symbolId = navigation.getParam('id');
 
+    // $FlowFixMe
     if (!has(symbols, symbolId)) {
       getSymbol(userId, symbolId);
     }
@@ -46,24 +51,32 @@ class SymbolScreen extends Component<Props> {
 
     if (!symbolId) {
       return (
-        <View>
-          <Text>Symbol not found</Text>
-        </View>
+        <Container>
+          <Box center>
+            <Text>Symbol not found</Text>
+          </Box>
+        </Container>
       );
     }
 
     const symbol = symbols[symbolId];
 
     return (
-      <View
-        style={{
-          flex: 1,
-        }}
-      >
+      <Container p={0}>
         <LoadingContainer isLoading={isSymbolLoading}>
-          <Text>{symbol.baseInstrument.description}</Text>
+          <Box center>
+            <Text style={styles.SymbolPrice}>${symbol.price.ask}</Text>
+            <Text>Chart goes here</Text>
+          </Box>
+          <Box p={15}>
+            <Text style={styles.Heading}>About</Text>
+            <Text>{symbol.baseInstrument.description}</Text>
+          </Box>
+          <Box p={15}>
+            <Text style={styles.Heading}>News</Text>
+          </Box>
         </LoadingContainer>
-      </View>
+      </Container>
     );
   }
 }
