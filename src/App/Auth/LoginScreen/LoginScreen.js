@@ -2,17 +2,23 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import {
-  Headline, TextInput, HelperText, Button,
+  Text, TextInput, HelperText, Button,
 } from 'react-native-paper';
 import { connect } from 'react-redux';
 
 import { login } from '@services/auth/authActions';
-import { getLoginError } from '@services/auth/authSelectors';
+import { getLoginError, getLoginLoading } from '@services/auth/authSelectors';
 import { isEmailValid } from '@utils/validation';
+
+import Container from '@components/Container';
+import Box from '@components/Box';
+
+import styles from './LoginScreen.styles';
 
 type Props = {
   login: (email: string, password: string) => void,
   loginError: string,
+  isLoginLoading: boolean,
 };
 
 type State = {
@@ -47,75 +53,75 @@ class LoginScreen extends Component<Props, State> {
   onSubmit = () => this.props.login(this.state.email, this.state.password);
 
   render() {
-    const { loginError } = this.props;
+    const { loginError, isLoginLoading } = this.props;
     const { email, password, touched } = this.state;
 
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'space-around',
-          paddingHorizontal: 20,
-          paddingVertical: 60,
-        }}
-      >
-        <Headline style={{ textAlign: 'center' }}>Welcome</Headline>
-        <View>
+      <Container>
+        <Box justify="between" py={120}>
+          <Text style={styles.Header}>Welcome</Text>
           <View>
-            <TextInput
-              autoCapitalize="none"
-              label="Email"
-              value={email}
-              onChangeText={this.onChangeEmail}
-              onBlur={this.handleBlur('email')}
-            />
-            <HelperText
-              type="error"
-              visible={touched.email && !isEmailValid(email)}
-            >
-              Email address is invalid!
-            </HelperText>
+            <View style={styles.Input}>
+              <TextInput
+                autoCapitalize="none"
+                label="Email"
+                value={email}
+                onChangeText={this.onChangeEmail}
+                onBlur={this.handleBlur('email')}
+                error={touched.email && !isEmailValid(email)}
+              />
+              <HelperText
+                type="error"
+                visible={touched.email && !isEmailValid(email)}
+              >
+                Email address is invalid!
+              </HelperText>
+            </View>
+            <View style={styles.Input}>
+              <TextInput
+                autoCapitalize="none"
+                label="Password"
+                value={password}
+                onChangeText={this.onChangePassword}
+                secureTextEntry
+                onBlur={this.handleBlur('password')}
+                error={touched.password && password.length === 0}
+              />
+              <HelperText
+                type="error"
+                visible={touched.password && password.length === 0}
+              >
+                Password is required
+              </HelperText>
+            </View>
           </View>
           <View>
-            <TextInput
-              autoCapitalize="none"
-              label="Password"
-              value={password}
-              onChangeText={this.onChangePassword}
-              secureTextEntry
-              onBlur={this.handleBlur('password')}
-            />
             <HelperText
               type="error"
-              visible={touched.password && password.length === 0}
+              visible={loginError}
+              style={{ textAlign: 'center', marginBottom: 20 }}
             >
-              Password is required
+              {loginError}
             </HelperText>
+            <Button
+              style={{ padding: 15 }}
+              mode="contained"
+              onPress={this.onSubmit}
+              loading={isLoginLoading}
+              disabled={isLoginLoading}
+            >
+              Sign In
+            </Button>
           </View>
-        </View>
-        <View>
-          <HelperText
-            type="error"
-            visible={loginError}
-            style={{ textAlign: 'center', marginBottom: 20 }}
-          >
-            {loginError}
-          </HelperText>
-          <Button
-            style={{ padding: 15 }}
-            mode="contained"
-            onPress={this.onSubmit}
-          >
-            Sign In
-          </Button>
-        </View>
-      </View>
+        </Box>
+      </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
   loginError: getLoginError(state),
+  isLoginLoading: getLoginLoading(state),
 });
 
 const actions = {

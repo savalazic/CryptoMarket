@@ -3,6 +3,8 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 
 import TabBarIcon from '../components/TabBarIcon';
 
+import { theme } from '../theme';
+
 import AppLoadingScreen from './AppLoadingScreen';
 import AuthStack from './Auth';
 import SymbolStack from './Symbol';
@@ -17,6 +19,7 @@ const AppNavigator = createMaterialBottomTabNavigator(
       navigationOptions: () => ({
         tabBarIcon: props => setTabBarIcon('list', props),
         tabBarLabel: 'Market Search',
+        activeTintColor: theme.colors.primary,
       }),
     },
     Watchlist: {
@@ -24,6 +27,7 @@ const AppNavigator = createMaterialBottomTabNavigator(
       navigationOptions: () => ({
         tabBarIcon: props => setTabBarIcon('favorite', props),
         tabBarLabel: 'Favorites',
+        activeTintColor: theme.colors.primary,
       }),
     },
   },

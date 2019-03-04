@@ -22,6 +22,8 @@ import type { Symbol, Symbols } from '@services/symbol/symbolTypes';
 
 import SymbolList from '@components/SymbolList';
 import LoadingContainer from '@components/LoadingContainer';
+import Container from '@components/Container';
+import Box from '@components/Box';
 
 type Props = {
   navigation: NavigationScreenProp<{}>,
@@ -65,7 +67,7 @@ class SymbolsScreen extends Component<Props, State> {
   filterSymbols = (symbols) => {
     const { searchQuery } = this.state;
     // eslint-disable-next-line
-    return symbols.filter(symbol => symbol.displayName.toLowerCase().includes(searchQuery.toLowerCase()));
+    return symbols.filter(symbol => symbol.displayName.toLowerCase().includes(searchQuery.toLowerCase()),);
   };
 
   render() {
@@ -75,26 +77,27 @@ class SymbolsScreen extends Component<Props, State> {
     const filteredSymbols = this.filterSymbols(symbols);
 
     return (
-      <View style={{ flex: 1 }}>
-        <View>
+      <Container p={0}>
+        <Box f={0} p={15}>
           <Searchbar
-            placeholder="Search"
+            placeholder="Search here"
             autoCapitalize="none"
+            autoCorrect={false}
             onChangeText={this.onSearchChange}
             value={searchQuery}
           />
-        </View>
+        </Box>
         <LoadingContainer isLoading={isLoadingSymbols || isLoadingWatchlist}>
-          <View style={{ width: '100%' }}>
+          <Box f={1}>
             <SymbolList
               symbols={filteredSymbols}
               onSymbolPress={this.handlePressSymbol}
               onFavoritePress={this.handleFavoritePress}
             />
-          </View>
+          </Box>
         </LoadingContainer>
         <Button onPress={() => this.props.logout()}>Logout</Button>
-      </View>
+      </Container>
     );
   }
 }
