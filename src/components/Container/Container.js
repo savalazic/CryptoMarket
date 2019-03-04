@@ -1,5 +1,5 @@
 // @flow
-import React, { Node } from 'react';
+import React, { type Node } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({

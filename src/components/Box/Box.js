@@ -11,7 +11,7 @@ import {
 
 type Props = {
   children: Node,
-  style?: {},
+  style?: any,
   justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly',
   align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline',
   dir?: 'col' | 'col-reverse' | 'row' | 'row-reverse',
