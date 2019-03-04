@@ -14,6 +14,7 @@
     "@redux-saga/testing-utils": "^1.0.1",
     "axios": "^0.18.0",
     "lodash": "^4.17.11",
+    "qs": "^6.6.0",
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-gesture-handler": "^1.0.16",

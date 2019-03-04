@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 
 import { login } from '@services/auth/authActions';
 import { getLoginError } from '@services/auth/authSelectors';
+import { isEmailValid } from '@utils/validation';
 
 type Props = {
   login: (email: string, password: string) => void,
@@ -17,22 +18,37 @@ type Props = {
 type State = {
   email: string,
   password: string,
+  touched: {
+    email: boolean,
+    password: boolean,
+  },
 };
 
 class LoginScreen extends Component<Props, State> {
   state = {
     email: '',
     password: '',
+    touched: {
+      email: false,
+      password: false,
+    },
   };
 
   onChangeEmail = (email: string) => this.setState({ email });
 
   onChangePassword = (password: string) => this.setState({ password });
 
+  handleBlur = field => () => {
+    this.setState(prevState => ({
+      touched: { ...prevState.touched, [field]: true },
+    }));
+  };
+
   onSubmit = () => this.props.login(this.state.email, this.state.password);
 
   render() {
     const { loginError } = this.props;
+    const { email, password, touched } = this.state;
 
     return (
       <View
@@ -49,14 +65,13 @@ class LoginScreen extends Component<Props, State> {
             <TextInput
               autoCapitalize="none"
               label="Email"
-              value={this.state.email}
+              value={email}
               onChangeText={this.onChangeEmail}
+              onBlur={this.handleBlur('email')}
             />
             <HelperText
               type="error"
-              visible={
-                this.state.email.length > 0 && !this.state.email.includes('@')
-              }
+              visible={touched.email && !isEmailValid(email)}
             >
               Email address is invalid!
             </HelperText>
@@ -65,17 +80,16 @@ class LoginScreen extends Component<Props, State> {
             <TextInput
               autoCapitalize="none"
               label="Password"
-              value={this.state.password}
+              value={password}
               onChangeText={this.onChangePassword}
               secureTextEntry
+              onBlur={this.handleBlur('password')}
             />
             <HelperText
               type="error"
-              visible={
-                this.state.password.length > 0 && this.state.password.length < 8
-              }
+              visible={touched.password && password.length === 0}
             >
-              Password must be at least 8 characters long!
+              Password is required
             </HelperText>
           </View>
         </View>

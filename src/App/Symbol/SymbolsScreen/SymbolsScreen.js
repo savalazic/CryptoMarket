@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { type NavigationScreenProp } from 'react-navigation';
-import { Button } from 'react-native-paper';
+import { Button, Searchbar } from 'react-native-paper';
 
 import { logout } from '@services/auth/authActions';
 import { getUserInfoId, getUserAccountId } from '@services/user/userSelectors';
@@ -13,7 +13,6 @@ import {
   addToWatchlist,
 } from '@services/symbol/symbolActions';
 import {
-  getSymbolsSelector,
   getSymbolsArraySelector,
   getSymbolsLoading,
   getWatchlistLoading,
@@ -36,13 +35,22 @@ type Props = {
   addToWatchlist: (accountId: string, symbolId: string) => void,
 };
 
-class SymbolsScreen extends Component<Props> {
+type State = {
+  searchQuery: string,
+};
+
+class SymbolsScreen extends Component<Props, State> {
+  state = {
+    searchQuery: '',
+  };
+
   componentDidMount() {
     this.props.getSymbols(this.props.userId);
     this.props.getWatchlist(this.props.userAccountId);
   }
 
   handlePressSymbol = (symbol: Symbol) => {
+    // $FlowFixMe
     this.props.navigation.navigate('SingleSymbol', symbol);
   };
 
@@ -50,15 +58,36 @@ class SymbolsScreen extends Component<Props> {
     this.props.addToWatchlist(this.props.userAccountId, symbol.id);
   };
 
+  onSearchChange = (searchQuery) => {
+    this.setState({ searchQuery });
+  };
+
+  filterSymbols = (symbols) => {
+    const { searchQuery } = this.state;
+    // eslint-disable-next-line
+    return symbols.filter(symbol => symbol.displayName.toLowerCase().includes(searchQuery.toLowerCase()));
+  };
+
   render() {
     const { isLoadingSymbols, isLoadingWatchlist, symbols } = this.props;
+    const { searchQuery } = this.state;
+
+    const filteredSymbols = this.filterSymbols(symbols);
 
     return (
       <View style={{ flex: 1 }}>
+        <View>
+          <Searchbar
+            placeholder="Search"
+            autoCapitalize="none"
+            onChangeText={this.onSearchChange}
+            value={searchQuery}
+          />
+        </View>
         <LoadingContainer isLoading={isLoadingSymbols || isLoadingWatchlist}>
           <View style={{ width: '100%' }}>
             <SymbolList
-              symbols={symbols}
+              symbols={filteredSymbols}
               onSymbolPress={this.handlePressSymbol}
               onFavoritePress={this.handleFavoritePress}
             />

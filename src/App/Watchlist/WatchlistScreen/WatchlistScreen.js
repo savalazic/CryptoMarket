@@ -30,7 +30,8 @@ class WatchlistScreen extends Component<Props> {
     this.props.getWatchlist(this.props.userAccountId);
   }
 
-  handlePressSymbol = (symbol: Symbol) => {
+  handleSymbolPress = (symbol: Symbol) => {
+    // @FlowFixMe
     this.props.navigation.navigate('SingleSymbol', symbol);
   };
 
@@ -47,7 +48,7 @@ class WatchlistScreen extends Component<Props> {
           <View style={{ width: '100%' }}>
             <SymbolList
               symbols={symbolsFromWatchlist}
-              onSymbolPress={this.handlePressSymbol}
+              onSymbolPress={this.handleSymbolPress}
               onFavoritePress={this.handleFavoritePress}
             />
           </View>
