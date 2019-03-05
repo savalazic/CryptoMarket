@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import { put, call, takeEvery } from 'redux-saga/effects';
 import { NavigationActions } from 'react-navigation';
 
@@ -14,6 +15,16 @@ export function* login(action) {
 
   if (response) {
     yield put(loginSuccess(response.data));
+    yield call(
+      [AsyncStorage, 'setItem'],
+      'accessToken',
+      response.data.accessToken,
+    );
+    yield call(
+      [AsyncStorage, 'setItem'],
+      'refreshToken',
+      response.data.refreshToken,
+    );
     yield put(getUserInfo());
     yield put(NavigationActions.navigate({ routeName: 'App' }));
   } else {

@@ -1,54 +1,29 @@
 import api from '../api';
 
-const getSymbols = (userId, token) => api
-  .get(`users/${userId}/symbols`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+const getSymbols = userId => api
+  .get(`users/${userId}/symbols`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+const getSymbol = (userId, symbolId) => api
+  .get(`users/${userId}/symbols/${symbolId}`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+const getWatchlist = accountId => api
+  .get(`accounts/${accountId}/watchlist`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+const addToWatchlist = (accountId, symbolId, isFollowing) => api
+  .put(`accounts/${accountId}/watchlist/${symbolId}`, {
+    following: isFollowing,
   })
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-const getSymbol = (userId, symbolId, token) => api
-  .get(`users/${userId}/symbols/${symbolId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-  .then(response => ({ response }))
-  .catch(error => ({ error }));
-
-const getWatchlist = (accountId, token) => api
-  .get(`accounts/${accountId}/watchlist`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-  .then(response => ({ response }))
-  .catch(error => ({ error }));
-
-const addToWatchlist = (accountId, symbolId, token, isFollowing) => api
-  .put(
-    `accounts/${accountId}/watchlist/${symbolId}`,
-    {
-      following: isFollowing,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    },
-  )
-  .then(response => ({ response }))
-  .catch(error => ({ error }));
-
-const getChartData = (userId, symbolId, token) => api
-  .get(`users/${userId}/symbols/${symbolId}/charts`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+const getChartData = (userId, symbolId) => api
+  .get(`users/${userId}/symbols/${symbolId}/charts`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
 

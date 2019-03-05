@@ -1,6 +1,4 @@
-import {
-  put, call, takeEvery, select,
-} from 'redux-saga/effects';
+import { put, call, takeEvery } from 'redux-saga/effects';
 
 import {
   ActionTypes,
@@ -8,11 +6,9 @@ import {
   getUserInfoFailure,
 } from './userActions';
 import userApi from './userApi';
-import { getToken } from '../auth/authSelectors';
 
 export function* getUserInfo() {
-  const token = yield select(getToken);
-  const { response, error } = yield call(userApi.getUserInfo, token);
+  const { response, error } = yield call(userApi.getUserInfo);
 
   if (response) {
     yield put(getUserInfoSuccess(response.data));

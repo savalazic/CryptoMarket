@@ -16,16 +16,11 @@ import {
   getSymbolChartDataFailure,
 } from './symbolActions';
 import { getSymbolsMapSelector } from './symbolSelectors';
-import { getToken } from '../auth/authSelectors';
 import symbolApi from './symbolApi';
 
 export function* getSymbols(action) {
-  const token = yield select(getToken);
-  const { response, error } = yield call(
-    symbolApi.getSymbols,
-    action.payload,
-    token,
-  );
+  console.log(action);
+  const { response, error } = yield call(symbolApi.getSymbols, action.payload);
 
   if (response) {
     yield put(getSymbolsSuccess(response.data));
@@ -35,12 +30,10 @@ export function* getSymbols(action) {
 }
 
 export function* getSymbol(action) {
-  const token = yield select(getToken);
   const { response, error } = yield call(
     symbolApi.getSymbol,
     action.payload.userId,
     action.payload.symbolId,
-    token,
   );
 
   if (response) {
@@ -51,12 +44,9 @@ export function* getSymbol(action) {
 }
 
 export function* getWatchlist(action) {
-  const token = yield select(getToken);
-
   const { response, error } = yield call(
     symbolApi.getWatchlist,
     action.payload,
-    token,
   );
 
   if (response) {
@@ -67,7 +57,6 @@ export function* getWatchlist(action) {
 }
 
 export function* addToWatchlist(action) {
-  const token = yield select(getToken);
   const symbols = yield select(getSymbolsMapSelector);
   const symbol = symbols[action.payload.symbolId];
 
@@ -75,7 +64,6 @@ export function* addToWatchlist(action) {
     symbolApi.addToWatchlist,
     action.payload.accountId,
     action.payload.symbolId,
-    token,
     !symbol.isFollowing,
   );
 
@@ -91,12 +79,10 @@ export function* addToWatchlist(action) {
 }
 
 export function* getChartData(action) {
-  const token = yield select(getToken);
   const { response, error } = yield call(
     symbolApi.getChartData,
     action.payload.userId,
     action.payload.symbolId,
-    token,
   );
 
   if (response) {

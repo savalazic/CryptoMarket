@@ -12,7 +12,11 @@ const login = (email, password) => {
   };
 
   return api
-    .post('oauth/token/', qs.stringify(data))
+    .post('oauth/token/', qs.stringify(data), {
+      headers: {
+        noAuth: true,
+      },
+    })
     .then(response => ({ response }))
     .catch(error => ({ error }));
 };

@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 import { API_ROOT } from '../config';
 
@@ -26,26 +27,51 @@ export const createQueryString = (params) => {
   return queryString;
 };
 
-const get = (resourceUrl, options = {}, resourceId, params = {}) => {
+// const isTokenExpired = () => {
+//   const expiredIn = Number(window.localStorage.getItem('ACCESS_TOKEN_EXPIRED'))
+//     - Math.ceil(new Date().getTime() / 1000);
+//   return expiredIn - 10 < 0;
+// };
+
+const axiosInstance = axios.create();
+axiosInstance.interceptors.request.use(
+  async (config) => {
+    if (config.headers.noAuth) {
+      return config;
+    }
+
+    const request = config;
+
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    if (accessToken) {
+      request.headers.common.Authorization = `Bearer ${accessToken}`;
+    }
+
+    return request;
+  },
+  err => Promise.reject(err),
+);
+
+const get = (resourceUrl, params = {}, resourceId, options = {}) => {
   const id = resourceId ? `/${resourceId}` : '';
   const url = `${API_ROOT}/${resourceUrl + id + createQueryString(params)}`;
 
-  return axios.get(url, options);
+  return axiosInstance.get(url, options);
 };
 
 const post = (resourceUrl, newResource, options = {}) => {
   const url = `${API_ROOT}/${resourceUrl}`;
-  return axios.post(url, newResource, options);
+  return axiosInstance.post(url, newResource, options);
 };
 
 const put = (resourceUrl, newResource, options = {}) => {
   const url = `${API_ROOT}/${resourceUrl}`;
-  return axios.put(url, newResource, options);
+  return axiosInstance.put(url, newResource, options);
 };
 
 const remove = (resourceUrl, resourceId) => {
   const url = `${API_ROOT}/${resourceUrl}/${resourceId || ''}`;
-  return axios.delete(url);
+  return axiosInstance.delete(url);
 };
 
 export default {

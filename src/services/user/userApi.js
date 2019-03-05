@@ -1,11 +1,7 @@
 import api from '../api';
 
-const getUserInfo = token => api
-  .get('users/me', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+const getUserInfo = () => api
+  .get('users/me')
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
