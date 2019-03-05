@@ -93,7 +93,7 @@ class SymbolScreen extends Component<Props> {
                   <LoadingContainer isLoading={isNewsLoading}>
                     <NewsList news={news} />
                   </LoadingContainer>
-                  <Button compact loading={isNewsLoading} disabled={isNewsLoading} onPress={loadMore}>
+                  <Button disabled={isNewsLoading} onPress={loadMore}>
                     Load more
                   </Button>
                 </React.Fragment>

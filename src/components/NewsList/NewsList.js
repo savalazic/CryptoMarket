@@ -13,15 +13,7 @@ class NewsList extends Component<Props> {
   keyExtractor = (item: any) => String(item.id);
 
   renderItem = ({ item }: { item: any }) => (
-    <Box
-      f={1}
-      px={10}
-      mx={15}
-      py={15}
-      justify="between"
-      align="center"
-      dir="row"
-    >
+    <Box f={1} py={15} justify="between" align="center" dir="row">
       <Box f={1}>
         <Text>{item.title}</Text>
       </Box>
