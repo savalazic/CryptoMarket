@@ -5,6 +5,8 @@ import { format } from 'date-fns';
 
 import Box from '@components/Box';
 
+import styles from './NewsList.styles';
+
 type Props = {
   news: any,
 };
@@ -13,12 +15,14 @@ class NewsList extends Component<Props> {
   keyExtractor = (item: any) => String(item.id);
 
   renderItem = ({ item }: { item: any }) => (
-    <Box f={1} py={15} justify="between" align="center" dir="row">
-      <Box f={1}>
-        <Text>{item.title}</Text>
+    <Box f={1} py={15} style={styles.News}>
+      <Box>
+        <Text style={styles.Title}>{item.title}</Text>
       </Box>
-      <Box f={0} dir="row" align="center">
-        <Text>{format(item.published, 'DD. MMM. YYYY.')}</Text>
+      <Box>
+        <Text style={styles.Date}>
+          {format(item.published, 'DD. MMM YYYY.')}
+        </Text>
       </Box>
     </Box>
   );

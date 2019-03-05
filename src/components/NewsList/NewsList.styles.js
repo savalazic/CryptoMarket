@@ -2,16 +2,15 @@ import { Colors } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  Symbol: {
+  News: {
     borderBottomColor: Colors.grey300,
     borderBottomWidth: 1,
   },
-  SymbolName: {
+  Title: {
     fontSize: 18,
   },
-  SymbolPrice: {
-    fontSize: 18,
-    marginRight: 10,
+  Date: {
     color: Colors.grey600,
+    marginTop: 5,
   },
 });
