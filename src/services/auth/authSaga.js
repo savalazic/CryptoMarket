@@ -20,11 +20,6 @@ export function* login(action) {
       'accessToken',
       response.data.accessToken,
     );
-    yield call(
-      [AsyncStorage, 'setItem'],
-      'refreshToken',
-      response.data.refreshToken,
-    );
     yield put(getUserInfo());
     yield put(NavigationActions.navigate({ routeName: 'App' }));
   } else {
@@ -32,6 +27,11 @@ export function* login(action) {
   }
 }
 
+export function* logout() {
+  yield put(NavigationActions.navigate({ routeName: 'Login' }));
+}
+
 export default function* authSaga() {
   yield takeEvery(ActionTypes.LOGIN_REQUEST, login);
+  yield takeEvery(ActionTypes.LOGOUT, logout);
 }

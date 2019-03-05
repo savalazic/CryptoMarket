@@ -35,7 +35,7 @@ const mapStateToProps = state => ({
   state: state.nav,
 });
 const AppWithNavigationState = connect(mapStateToProps)(Appliocation);
-const store = createStore(reducers, enhancer);
+export const store = createStore(reducers, enhancer);
 const persistore = persistStore(store);
 
 sagaMiddleware.run(sagas);

@@ -2,6 +2,9 @@ import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 import { API_ROOT } from '../config';
 
+import { store } from '../index';
+import { logout } from './auth/authActions';
+
 export const createQueryString = (params) => {
   const paramsKeys = Object.entries(params)
     .filter(param => param[1] !== undefined)
@@ -27,12 +30,6 @@ export const createQueryString = (params) => {
   return queryString;
 };
 
-// const isTokenExpired = () => {
-//   const expiredIn = Number(window.localStorage.getItem('ACCESS_TOKEN_EXPIRED'))
-//     - Math.ceil(new Date().getTime() / 1000);
-//   return expiredIn - 10 < 0;
-// };
-
 const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
   async (config) => {
@@ -50,6 +47,17 @@ axiosInstance.interceptors.request.use(
     return request;
   },
   err => Promise.reject(err),
+);
+
+axiosInstance.interceptors.response.use(
+  response => response,
+  (error) => {
+    const { status } = error.response;
+    if (status === 401) {
+      store.dispatch(logout());
+    }
+    return Promise.reject(error);
+  },
 );
 
 const get = (resourceUrl, params = {}, resourceId, options = {}) => {
