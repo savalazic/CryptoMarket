@@ -2,7 +2,12 @@ import has from 'lodash/has';
 import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 import { createSelector } from 'reselect';
-import { getAllLoadersFromState, getLoaderStatus } from '../utils/utils';
+import {
+  getAllLoadersFromState,
+  getLoaderStatus,
+  getAllErrorsFromState,
+  getErrorStatus,
+} from '../utils/utils';
 import { ActionTypes } from './symbolActions';
 
 export const getSymbolsSelector = state => state.services.symbol.symbols;
@@ -13,9 +18,19 @@ export const getSymbolsLoading = createSelector(
   loaders => getLoaderStatus(loaders, ActionTypes.GET_SYMBOLS_REQUEST),
 );
 
+export const getSymbolsError = createSelector(
+  getAllErrorsFromState,
+  errors => getErrorStatus(errors, ActionTypes.GET_SYMBOLS_FAILURE),
+);
+
 export const getSymbolLoading = createSelector(
   getAllLoadersFromState,
   loaders => getLoaderStatus(loaders, ActionTypes.GET_SYMBOL_REQUEST),
+);
+
+export const getSymbolError = createSelector(
+  getAllErrorsFromState,
+  errors => getErrorStatus(errors, ActionTypes.GET_SYMBOL_FAILURE),
 );
 
 export const getSymbolsMapSelector = createSelector(

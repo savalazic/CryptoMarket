@@ -1,7 +1,7 @@
 import qs from 'qs';
 import api from '../api';
 
-const CLIENT_ID = '844b0a54-c0af-11e7-abc4-cec278b6b50a';
+import { CLIENT_ID } from '../../config';
 
 const login = (email, password) => {
   const data = {

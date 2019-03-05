@@ -6,6 +6,7 @@ import utilsReducer from './utils/utilsReducer';
 import authReducer from './auth/authReducer';
 import userReducer from './user/userReducer';
 import symbolReducer from './symbol/symbolReducer';
+import newsReducer from './news/newsReducer';
 
 const authPersistConfig = {
   key: 'auth',
@@ -22,6 +23,7 @@ const ServiceReducer = combineReducers({
   user: persistReducer(userPersistConfig, userReducer),
   utils: utilsReducer,
   symbol: symbolReducer,
+  news: newsReducer,
 });
 
 export default ServiceReducer;

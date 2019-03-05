@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
 import { type NavigationScreenProp } from 'react-navigation';
 import { Button, Searchbar } from 'react-native-paper';
 
