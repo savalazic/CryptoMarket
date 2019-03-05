@@ -4,7 +4,7 @@ import { theme } from '../../../theme';
 
 export default StyleSheet.create({
   SymbolPrice: {
-    fontSize: 35,
+    fontSize: 30,
     textAlign: 'center',
     fontWeight: '600',
   },
@@ -15,6 +15,6 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   Button: {
-    marginVertical: 20
-  }
+    marginVertical: 20,
+  },
 });

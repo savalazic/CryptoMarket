@@ -11,6 +11,9 @@ export const ActionTypes = {
   ADD_TO_WATCHLIST_REQUEST: 'ADD_TO_WATCHLIST_REQUEST',
   ADD_TO_WATCHLIST_SUCCESS: 'ADD_TO_WATCHLIST_SUCCESS',
   ADD_TO_WATCHLIST_FAILURE: 'ADD_TO_WATCHLIST_FAILURE',
+  GET_SYMBOL_CHART_DATA_REQUEST: 'GET_SYMBOL_CHART_DATA_REQUEST',
+  GET_SYMBOL_CHART_DATA_SUCCESS: 'GET_SYMBOL_CHART_DATA_SUCCESS',
+  GET_SYMBOL_CHART_DATA_FAILURE: 'GET_SYMBOL_CHART_DATA_FAILURE',
 };
 
 // get symbols action creators
@@ -74,5 +77,21 @@ export const addToWatchlistSuccess = watchlist => ({
 
 export const addToWatchlistFailure = error => ({
   type: ActionTypes.ADD_TO_WATCHLIST_FAILURE,
+  payload: error,
+});
+
+// get symbol chart data action creators
+export const getSymbolChartData = (userId, symbolId) => ({
+  type: ActionTypes.GET_SYMBOL_CHART_DATA_REQUEST,
+  payload: { userId, symbolId },
+});
+
+export const getSymbolChartDataSuccess = chartData => ({
+  type: ActionTypes.GET_SYMBOL_CHART_DATA_SUCCESS,
+  payload: chartData,
+});
+
+export const getSymbolChartDataFailure = error => ({
+  type: ActionTypes.GET_SYMBOL_CHART_DATA_FAILURE,
   payload: error,
 });

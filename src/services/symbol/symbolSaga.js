@@ -12,6 +12,8 @@ import {
   getWatchlistFailure,
   addToWatchlistSuccess,
   addToWatchlistFailure,
+  getSymbolChartDataSuccess,
+  getSymbolChartDataFailure,
 } from './symbolActions';
 import { getSymbolsMapSelector } from './symbolSelectors';
 import { getToken } from '../auth/authSelectors';
@@ -88,9 +90,26 @@ export function* addToWatchlist(action) {
   }
 }
 
+export function* getChartData(action) {
+  const token = yield select(getToken);
+  const { response, error } = yield call(
+    symbolApi.getChartData,
+    action.payload.userId,
+    action.payload.symbolId,
+    token,
+  );
+
+  if (response) {
+    yield put(getSymbolChartDataSuccess(response.data));
+  } else {
+    yield put(getSymbolChartDataFailure(error.response.data));
+  }
+}
+
 export default function* symbolSaga() {
   yield takeEvery(ActionTypes.GET_SYMBOLS_REQUEST, getSymbols);
   yield takeEvery(ActionTypes.GET_SYMBOL_REQUEST, getSymbol);
   yield takeEvery(ActionTypes.GET_WATCHLIST_REQUEST, getWatchlist);
   yield takeEvery(ActionTypes.ADD_TO_WATCHLIST_REQUEST, addToWatchlist);
+  yield takeEvery(ActionTypes.GET_SYMBOL_CHART_DATA_REQUEST, getChartData);
 }

@@ -6,14 +6,16 @@ import { connect } from 'react-redux';
 import { Text, Button } from 'react-native-paper';
 import { type NavigationScreenProp } from 'react-navigation';
 
-import { getSymbol as getSymbolAction } from '@services/symbol/symbolActions';
 import { getUserInfoId } from '@services/user/userSelectors';
+import { getSymbol, getSymbolChartData } from '@services/symbol/symbolActions';
 import {
   getSymbolLoading,
   getSymbolsSelector,
+  getSymbolChartDataLoading,
+  getSymbolsAskChartData,
 } from '@services/symbol/symbolSelectors';
 import { type Symbols } from '@services/symbol/symbolTypes';
-import { getNews as getNewsAction } from '@services/news/newsActions';
+import { getNews } from '@services/news/newsActions';
 import { getNewsSelector, getNewsLoading } from '@services/news/newsSelectors';
 
 import LoadingContainer from '@components/LoadingContainer';
@@ -21,6 +23,7 @@ import Container from '@components/Container';
 import Box from '@components/Box';
 import Pagination from '@components/Pagination';
 import NewsList from '@components/NewsList';
+import LineChart from '@components/LineChart';
 
 import styles from './SymbolScreen.style';
 
@@ -33,6 +36,9 @@ type Props = {
   isSymbolLoading: boolean,
   isNewsLoading: boolean,
   news: any,
+  getSymbolChartData: (userId: string, symbolId: string) => void,
+  isChartDataLoading: boolean,
+  symbolAskChartData: number[],
 };
 
 class SymbolScreen extends Component<Props> {
@@ -41,17 +47,18 @@ class SymbolScreen extends Component<Props> {
   });
 
   componentDidMount() {
-    const {
-      navigation, symbols, getSymbol, userId, getNews,
-    } = this.props;
+    const { navigation, symbols, userId } = this.props;
     const symbolId = navigation.getParam('id');
 
     // $FlowFixMe
     if (!has(symbols, symbolId)) {
-      getSymbol(userId, symbolId);
+      // $FlowFixMe
+      this.props.getSymbol(userId, symbolId);
     }
 
-    getNews(5, 0);
+    this.props.getNews(5, 0);
+    // $FlowFixMe
+    this.props.getSymbolChartData(userId, symbolId);
   }
 
   handleLoadMore = (limit, offset) => {
@@ -59,7 +66,15 @@ class SymbolScreen extends Component<Props> {
   };
 
   render() {
-    const { isSymbolLoading, symbols, navigation, isNewsLoading, news } = this.props;
+    const {
+      isSymbolLoading,
+      symbols,
+      navigation,
+      isNewsLoading,
+      news,
+      isChartDataLoading,
+      symbolAskChartData,
+    } = this.props;
     const symbolId = navigation.getParam('id');
 
     if (!symbolId) {
@@ -77,9 +92,13 @@ class SymbolScreen extends Component<Props> {
     return (
       <ScrollView>
         <LoadingContainer isLoading={isSymbolLoading}>
-          <Box center>
+          <Box center py={30}>
             <Text style={styles.SymbolPrice}>${symbol.price.ask}</Text>
-            <Text>Chart goes here</Text>
+            <Box my={30}>
+              <LoadingContainer isLoading={isChartDataLoading}>
+                <LineChart data={symbolAskChartData} />
+              </LoadingContainer>
+            </Box>
           </Box>
           <Box p={15}>
             <Text style={styles.Heading}>About</Text>
@@ -93,7 +112,11 @@ class SymbolScreen extends Component<Props> {
                   <LoadingContainer isLoading={isNewsLoading}>
                     <NewsList news={news} />
                   </LoadingContainer>
-                  <Button disabled={isNewsLoading} onPress={loadMore} style={styles.Button}>
+                  <Button
+                    disabled={isNewsLoading}
+                    onPress={loadMore}
+                    style={styles.Button}
+                  >
                     Load more
                   </Button>
                 </React.Fragment>
@@ -112,11 +135,14 @@ const mapStateToProps = state => ({
   symbols: getSymbolsSelector(state),
   isNewsLoading: getNewsLoading(state),
   news: getNewsSelector(state),
+  isChartDataLoading: getSymbolChartDataLoading(state),
+  symbolAskChartData: getSymbolsAskChartData(state),
 });
 
 const actions = {
-  getSymbol: getSymbolAction,
-  getNews: getNewsAction,
+  getSymbol,
+  getNews,
+  getSymbolChartData,
 };
 
 export default connect(

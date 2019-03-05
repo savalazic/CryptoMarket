@@ -95,6 +95,7 @@ class SymbolsScreen extends Component<Props, State> {
             />
           </Box>
         </LoadingContainer>
+        {/* $FlowFixMe */}
         <Button onPress={() => this.props.logout()}>Logout</Button>
       </Container>
     );

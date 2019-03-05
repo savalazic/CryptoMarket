@@ -12,6 +12,7 @@ import { ActionTypes } from './symbolActions';
 
 export const getSymbolsSelector = state => state.services.symbol.symbols;
 export const getSymbolsFromWatchlistSelector = state => state.services.symbol.watchlist;
+export const getSymbolChartDataSelector = state => state.services.symbol.chartData;
 
 export const getSymbolsLoading = createSelector(
   getAllLoadersFromState,
@@ -31,6 +32,16 @@ export const getSymbolLoading = createSelector(
 export const getSymbolError = createSelector(
   getAllErrorsFromState,
   errors => getErrorStatus(errors, ActionTypes.GET_SYMBOL_FAILURE),
+);
+
+export const getSymbolChartDataLoading = createSelector(
+  getAllLoadersFromState,
+  loaders => getLoaderStatus(loaders, ActionTypes.GET_SYMBOL_CHART_DATA_REQUEST),
+);
+
+export const getSymbolChartDataError = createSelector(
+  getAllErrorsFromState,
+  errors => getErrorStatus(errors, ActionTypes.GET_SYMBOL_CHART_DATA_FAILURE),
 );
 
 export const getSymbolsMapSelector = createSelector(
@@ -68,4 +79,9 @@ export const getSymbolsFromWatchlistArraySelector = createSelector(
     ...symbol,
     isFollowing: true,
   })),
+);
+
+export const getSymbolsAskChartData = createSelector(
+  getSymbolChartDataSelector,
+  symbols => map(symbols, symbol => symbol.ask_open),
 );

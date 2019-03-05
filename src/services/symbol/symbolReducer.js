@@ -6,6 +6,7 @@ import { ActionTypes } from './symbolActions';
 export const initialState = {
   symbols: {},
   watchlist: {},
+  chartData: {},
 };
 
 const symbolReducer = (state = initialState, action) => {
@@ -46,6 +47,11 @@ const symbolReducer = (state = initialState, action) => {
         symbols: assign({}, state.symbols, {
           [action.payload.id]: action.payload,
         }),
+      };
+    case ActionTypes.GET_SYMBOL_CHART_DATA_SUCCESS:
+      return {
+        ...state,
+        chartData: action.payload,
       };
     default:
       return state;

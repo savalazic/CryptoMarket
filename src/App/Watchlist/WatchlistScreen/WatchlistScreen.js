@@ -31,7 +31,7 @@ class WatchlistScreen extends Component<Props> {
   }
 
   handleSymbolPress = (symbol: Symbol) => {
-    // @FlowFixMe
+    // $FlowFixMe
     this.props.navigation.navigate('SingleSymbol', symbol);
   };
 

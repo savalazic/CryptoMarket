@@ -43,9 +43,19 @@ const addToWatchlist = (accountId, symbolId, token, isFollowing) => api
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
+const getChartData = (userId, symbolId, token) => api
+  .get(`users/${userId}/symbols/${symbolId}/charts`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
 export default {
   getSymbols,
   getSymbol,
   getWatchlist,
   addToWatchlist,
+  getChartData,
 };
