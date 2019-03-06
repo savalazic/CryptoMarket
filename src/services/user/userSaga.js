@@ -4,6 +4,8 @@ import {
   ActionTypes,
   getUserInfoSuccess,
   getUserInfoFailure,
+  getUserAccountsSuccess,
+  getUserAccountsFailure,
 } from './userActions';
 import userApi from './userApi';
 
@@ -17,6 +19,20 @@ export function* getUserInfo() {
   }
 }
 
+export function* getUserAccounts(action) {
+  const { response, error } = yield call(
+    userApi.getUserAccounts,
+    action.payload,
+  );
+
+  if (response) {
+    yield put(getUserAccountsSuccess(response.data));
+  } else {
+    yield put(getUserAccountsFailure(error.response.data));
+  }
+}
+
 export default function* userSaga() {
   yield takeEvery(ActionTypes.GET_USER_INFO_REQUEST, getUserInfo);
+  yield takeEvery(ActionTypes.GET_USER_ACCOUNTS_REQUEST, getUserAccounts);
 }

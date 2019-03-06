@@ -19,7 +19,6 @@ import { getSymbolsMapSelector } from './symbolSelectors';
 import symbolApi from './symbolApi';
 
 export function* getSymbols(action) {
-  console.log(action);
   const { response, error } = yield call(symbolApi.getSymbols, action.payload);
 
   if (response) {

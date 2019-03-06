@@ -1,10 +1,13 @@
 import { AsyncStorage } from 'react-native';
-import { put, call, takeEvery } from 'redux-saga/effects';
+import {
+  put, call, takeEvery, select,
+} from 'redux-saga/effects';
 import { NavigationActions } from 'react-navigation';
 
 import authApi from './authApi';
 import { ActionTypes, loginSuccess, loginFailure } from './authActions';
-import { getUserInfo } from '../user/userActions';
+import { getUserInfo, getUserAccounts } from '../user/userActions';
+import { getUserInfoId } from '../user/userSelectors';
 
 export function* login(action) {
   const { response, error } = yield call(
@@ -21,6 +24,8 @@ export function* login(action) {
       response.data.accessToken,
     );
     yield put(getUserInfo());
+    const userId = yield select(getUserInfoId);
+    yield put(getUserAccounts(userId));
     yield put(NavigationActions.navigate({ routeName: 'App' }));
   } else {
     yield put(loginFailure(error.response.data));

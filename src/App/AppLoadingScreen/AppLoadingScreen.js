@@ -6,21 +6,25 @@ import { ActivityIndicator } from 'react-native-paper';
 import { type NavigationScreenProp } from 'react-navigation';
 
 import { getToken } from '@services/auth/authSelectors';
-import { getUserInfo } from '@services/user/userActions';
+import { getUserInfo, getUserAccounts } from '@services/user/userActions';
+import { getUserInfoId } from '@services/user/userSelectors';
 
 type Props = {
   accessToken: string,
+  userId: string,
   navigation: NavigationScreenProp<{}>,
   getUserInfo: () => void,
+  getUserAccounts: (id: string) => void,
 };
 
 class AppLoadingScreen extends Component<Props> {
   componentDidMount() {
-    const { accessToken } = this.props;
+    const { accessToken, userId } = this.props;
     this.props.navigation.navigate(accessToken ? 'App' : 'Auth');
 
     if (accessToken) {
       this.props.getUserInfo();
+      this.props.getUserAccounts(userId);
     }
   }
 
@@ -42,9 +46,10 @@ class AppLoadingScreen extends Component<Props> {
 
 const mapStateToProps = state => ({
   accessToken: getToken(state),
+  userId: getUserInfoId(state),
 });
 
-const actions = { getUserInfo };
+const actions = { getUserInfo, getUserAccounts };
 
 export default connect(
   mapStateToProps,
