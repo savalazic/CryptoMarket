@@ -14,6 +14,10 @@ export const ActionTypes = {
   GET_SYMBOL_CHART_DATA_REQUEST: 'GET_SYMBOL_CHART_DATA_REQUEST',
   GET_SYMBOL_CHART_DATA_SUCCESS: 'GET_SYMBOL_CHART_DATA_SUCCESS',
   GET_SYMBOL_CHART_DATA_FAILURE: 'GET_SYMBOL_CHART_DATA_FAILURE',
+  OPEN_SYMBOL_SOCKET: 'OPEN_SYMBOL_SOCKET',
+  CLOSE_SYMBOL_SOCKET: 'CLOSE_SYMBOL_SOCKET',
+  RECEIVE_SYMBOL_PRICE: 'RECEIVE_SYMBOL_PRICE',
+  SUBSCRIBE_SYMBOL_PRICE: 'SUBSCRIBE_SYMBOL_PRICE',
 };
 
 // get symbols action creators
@@ -94,4 +98,27 @@ export const getSymbolChartDataSuccess = chartData => ({
 export const getSymbolChartDataFailure = error => ({
   type: ActionTypes.GET_SYMBOL_CHART_DATA_FAILURE,
   payload: error,
+});
+
+// symbol socket action creators
+export const receiveSymbolPrice = symbol => ({
+  type: ActionTypes.RECEIVE_SYMBOL_PRICE,
+  payload: symbol,
+});
+
+export const subscribeSymbolPrice = symbolId => ({
+  type: ActionTypes.SUBSCRIBE_SYMBOL_PRICE,
+  payload: symbolId,
+});
+
+export const initSymbolSocket = () => ({
+  type: ActionTypes.INIT_SYMBOL_SOCKET,
+});
+
+export const openSymbolSocket = () => ({
+  type: ActionTypes.OPEN_SYMBOL_SOCKET,
+});
+
+export const closeSymbolSocket = () => ({
+  type: ActionTypes.CLOSE_SYMBOL_SOCKET,
 });

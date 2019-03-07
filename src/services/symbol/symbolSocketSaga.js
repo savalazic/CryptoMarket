@@ -1,69 +1,68 @@
 import { AsyncStorage } from 'react-native';
 import { eventChannel } from 'redux-saga';
-import { put, call, take } from 'redux-saga/effects';
+import {
+  call,
+  all,
+  take,
+  fork,
+  put,
+  takeEvery,
+  cancel,
+} from 'redux-saga/effects';
 
 import { SOCKET_URL } from '../../config';
 
-function webSocketInitChannel(accessToken) {
-  return eventChannel((emmiter) => {
-    // eslint-disable-next-line
-    const ws = new WebSocket(`${SOCKET_URL}/?accessToken=${accessToken}`);
+import SymbolSocket, { SOCKET_EVENTS } from './symbolSocket';
 
-    ws.onopen = () => {
-      console.log('socket open..');
-    };
+import { receiveSymbolPrice, ActionTypes } from './symbolActions';
 
-    ws.onerror = (error) => {
-      console.log('socket error', error);
-      // emmiter(
-      //   warning({
-      //     message: 'Something wrong happened',
-      //   }),
-      // );
-    };
+const createWebSocket = (url, token) => new SymbolSocket(url, token);
 
-    ws.onmessage = (e) => {
-      console.log('socket message', e);
+const createWebSocketChannel = webSocket => eventChannel((emit) => {
+  const messageHandler = data => emit(data);
+  webSocket.connect(messageHandler);
 
-      // let msg = '';
-      // let conversationId = '';
-      // if (e.data) {
-      //   msg = JSON.parse(e.data).message;
-      //   conversationId = JSON.parse(e.data).message.conversation;
+  return () => {
+    webSocket.close();
+  };
+});
 
-      //   emmiter(
-      //     info({
-      //       message: "You've got new message",
-      //       action: {
-      //         label: 'Click to see new message',
-      //         callback: () => emmiter(push(`/chat/${conversationId}`)),
-      //       },
-      //     }),
-      //   );
+function* receiveWebSocketMessage(webSocketChannel) {
+  while (true) {
+    const wsMessage = yield take(webSocketChannel);
+    const { type, payload } = wsMessage;
 
-      //   return emmiter(receiveConversationMessageSuccess(msg));
-      // }
-    };
+    if (type === SOCKET_EVENTS.TICK) {
+      yield put(receiveSymbolPrice(payload));
+    }
+  }
+}
 
-    ws.onclose = (e) => {
-      console.log('socket closed', e);
-      ws.close();
-    };
+function* sendWebSocketMessage(webSocket) {
+  while (true) {
+    const { payload } = yield take(ActionTypes.SUBSCRIBE_SYMBOL_PRICE);
+    yield call([webSocket, 'subscribe'], payload);
+  }
+}
 
-    return () => {
-      // unsubscribe
-      console.log('socket off');
-      ws.close();
-    };
-  });
+let tasks;
+
+function* openSocket() {
+  const accessToken = yield call([AsyncStorage, 'getItem'], 'accessToken');
+  const webSocket = yield call(createWebSocket, SOCKET_URL, accessToken);
+  const webSocketChannel = yield call(createWebSocketChannel, webSocket);
+
+  tasks = yield all([
+    fork(sendWebSocketMessage, webSocket),
+    fork(receiveWebSocketMessage, webSocketChannel),
+  ]);
+}
+
+function* closeSocket() {
+  yield cancel(tasks);
 }
 
 export default function* symbolSocketSaga() {
-  const accessToken = yield call([AsyncStorage, 'getItem'], 'accessToken');
-  const channel = yield call(webSocketInitChannel, accessToken);
-
-  while (true) {
-    const action = yield take(channel);
-    yield put(action);
-  }
+  yield takeEvery(ActionTypes.OPEN_SYMBOL_SOCKET, openSocket);
+  yield takeEvery(ActionTypes.CLOSE_SYMBOL_SOCKET, closeSocket);
 }

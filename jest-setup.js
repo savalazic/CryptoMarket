@@ -1,3 +1,4 @@
+/* eslint-disable */
 jest.mock('react-native-gesture-handler', () => {});
 jest.mock('react-navigation-stack', () => {});
 
@@ -17,5 +18,12 @@ jest.mock('react-navigation', () => ({
   },
   NavigationActions: {
     navigate: jest.fn().mockImplementation(x => x),
+    init: () => {},
   },
+}));
+
+jest.mock('react-navigation-redux-helpers', () => ({
+  createNavigationReducer: () => (state = {}, action) => state,
+  createReactNavigationReduxMiddleware: () => () => () => () => {},
+  reduxifyNavigator: () => () => {},
 }));

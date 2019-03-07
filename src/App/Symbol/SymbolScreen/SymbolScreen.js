@@ -6,8 +6,15 @@ import { connect } from 'react-redux';
 import { Text, Button } from 'react-native-paper';
 import { type NavigationScreenProp } from 'react-navigation';
 
+import { formatPrice } from '@utils/numberUtils';
 import { getUserInfoId } from '@services/user/userSelectors';
-import { getSymbol, getSymbolChartData } from '@services/symbol/symbolActions';
+import {
+  getSymbol,
+  getSymbolChartData,
+  subscribeSymbolPrice,
+  openSymbolSocket,
+  closeSymbolSocket,
+} from '@services/symbol/symbolActions';
 import {
   getSymbolLoading,
   getSymbolsSelector,
@@ -39,6 +46,9 @@ type Props = {
   getSymbolChartData: (userId: string, symbolId: string) => void,
   isChartDataLoading: boolean,
   symbolAskChartData: number[],
+  subscribeSymbolPrice: (symbolId: string) => void,
+  openSymbolSocket: () => void,
+  closeSymbolSocket: () => void,
 };
 
 class SymbolScreen extends Component<Props> {
@@ -59,6 +69,14 @@ class SymbolScreen extends Component<Props> {
     this.props.getNews(5, 0);
     // $FlowFixMe
     this.props.getSymbolChartData(userId, symbolId);
+
+    // $FlowFixMe
+    this.props.subscribeSymbolPrice(symbolId);
+    this.props.openSymbolSocket();
+  }
+
+  componentWillUnmount() {
+    this.props.closeSymbolSocket();
   }
 
   handleLoadMore = (limit, offset) => {
@@ -93,7 +111,9 @@ class SymbolScreen extends Component<Props> {
       <ScrollView>
         <LoadingContainer isLoading={isSymbolLoading}>
           <Box center py={30}>
-            <Text style={styles.SymbolPrice}>${symbol.price.ask}</Text>
+            <Text style={styles.SymbolPrice}>
+              {formatPrice(symbol.price.ask)}
+            </Text>
             <Box my={30}>
               <LoadingContainer isLoading={isChartDataLoading}>
                 <LineChart data={symbolAskChartData} />
@@ -143,6 +163,9 @@ const actions = {
   getSymbol,
   getNews,
   getSymbolChartData,
+  subscribeSymbolPrice,
+  openSymbolSocket,
+  closeSymbolSocket,
 };
 
 export default connect(

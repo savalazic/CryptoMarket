@@ -1,5 +1,6 @@
 import mapKeys from 'lodash/mapKeys';
 import assign from 'lodash/assign';
+import merge from 'lodash/merge';
 import { omit } from '@utils/objectUtils';
 import { ActionTypes } from './symbolActions';
 
@@ -52,6 +53,18 @@ const symbolReducer = (state = initialState, action) => {
       return {
         ...state,
         chartData: action.payload,
+      };
+    case ActionTypes.RECEIVE_SYMBOL_PRICE:
+      return {
+        ...state,
+        symbols: assign({}, state.symbols, {
+          [action.payload.id]: merge({}, state.symbols[action.payload.id], {
+            price: {
+              ask: action.payload.ask,
+              bid: action.payload.bid,
+            },
+          }),
+        }),
       };
     default:
       return state;

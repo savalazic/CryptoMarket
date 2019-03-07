@@ -5,6 +5,7 @@ import {
   Text, IconButton, TouchableRipple, Colors,
 } from 'react-native-paper';
 
+import { formatPrice } from '@utils/numberUtils';
 import type { Symbol, Symbols } from '@services/symbol/symbolTypes';
 
 import Box from '@components/Box';
@@ -52,7 +53,9 @@ class SymbolList extends Component<Props> {
           </Text>
         </Box>
         <Box f={0} dir="row" align="center">
-          <Text style={styles.SymbolPrice}>${item.price.ask}</Text>
+          <Text style={styles.SymbolPrice}>
+            {formatPrice(item.price.ask)}
+          </Text>
           <IconButton
             icon={`favorite${!item.isFollowing ? '-border' : ''}`}
             onPress={() => this.onFavoritePress(item)}
