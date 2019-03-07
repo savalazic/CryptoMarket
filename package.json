@@ -19,6 +19,7 @@
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-gesture-handler": "^1.0.16",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-paper": "^2.12.0",
     "react-native-svg": "^9.2.4",
     "react-native-svg-charts": "^5.2.0",

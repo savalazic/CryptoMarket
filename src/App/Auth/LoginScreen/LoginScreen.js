@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   Text, TextInput, HelperText, Button,
 } from 'react-native-paper';
@@ -57,64 +58,71 @@ class LoginScreen extends Component<Props, State> {
     const { email, password, touched } = this.state;
 
     return (
-      <Container>
-        <Box justify="between" py={120}>
-          <Text style={styles.Header}>Welcome</Text>
-          <View>
-            <View style={styles.Input}>
-              <TextInput
-                autoCapitalize="none"
-                label="Email"
-                value={email}
-                onChangeText={this.onChangeEmail}
-                onBlur={this.handleBlur('email')}
-                error={touched.email && !isEmailValid(email)}
-              />
+      // $FlowFixMe
+      <KeyboardAwareScrollView
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        scrollEnabled={false}
+        enableOnAndroid
+      >
+        <Container>
+          <Box justify="between" py={120}>
+            <Text style={styles.Header}>Welcome</Text>
+            <View>
+              <View style={styles.Input}>
+                <TextInput
+                  autoCapitalize="none"
+                  label="Email"
+                  value={email}
+                  onChangeText={this.onChangeEmail}
+                  onBlur={this.handleBlur('email')}
+                  error={touched.email && !isEmailValid(email)}
+                />
+                <HelperText
+                  type="error"
+                  visible={touched.email && !isEmailValid(email)}
+                >
+                  Email address is invalid!
+                </HelperText>
+              </View>
+              <View style={styles.Input}>
+                <TextInput
+                  autoCapitalize="none"
+                  label="Password"
+                  value={password}
+                  onChangeText={this.onChangePassword}
+                  secureTextEntry
+                  onBlur={this.handleBlur('password')}
+                  error={touched.password && password.length === 0}
+                />
+                <HelperText
+                  type="error"
+                  visible={touched.password && password.length === 0}
+                >
+                  Password is required
+                </HelperText>
+              </View>
+            </View>
+            <View>
               <HelperText
                 type="error"
-                visible={touched.email && !isEmailValid(email)}
+                visible={loginError}
+                style={{ textAlign: 'center', marginBottom: 20 }}
               >
-                Email address is invalid!
+                {loginError}
               </HelperText>
-            </View>
-            <View style={styles.Input}>
-              <TextInput
-                autoCapitalize="none"
-                label="Password"
-                value={password}
-                onChangeText={this.onChangePassword}
-                secureTextEntry
-                onBlur={this.handleBlur('password')}
-                error={touched.password && password.length === 0}
-              />
-              <HelperText
-                type="error"
-                visible={touched.password && password.length === 0}
+              <Button
+                style={{ padding: 15 }}
+                mode="contained"
+                onPress={this.onSubmit}
+                loading={isLoginLoading}
+                disabled={isLoginLoading}
               >
-                Password is required
-              </HelperText>
+                Sign In
+              </Button>
             </View>
-          </View>
-          <View>
-            <HelperText
-              type="error"
-              visible={loginError}
-              style={{ textAlign: 'center', marginBottom: 20 }}
-            >
-              {loginError}
-            </HelperText>
-            <Button
-              style={{ padding: 15 }}
-              mode="contained"
-              onPress={this.onSubmit}
-              loading={isLoginLoading}
-              disabled={isLoginLoading}
-            >
-              Sign In
-            </Button>
-          </View>
-        </Box>
-      </Container>
+          </Box>
+        </Container>
+      </KeyboardAwareScrollView>
     );
   }
 }

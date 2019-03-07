@@ -5,6 +5,7 @@ export default StyleSheet.create({
     fontSize: 35,
     textAlign: 'center',
     fontWeight: '600',
+    marginBottom: 20,
   },
   Input: {
     marginBottom: 15,
