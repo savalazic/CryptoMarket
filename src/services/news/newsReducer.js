@@ -1,6 +1,8 @@
 import { ActionTypes } from './newsActions';
 
-const newsReducer = (state = [], action) => {
+export const initialState = [];
+
+const newsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.GET_NEWS_SUCCESS:
       return action.payload;
