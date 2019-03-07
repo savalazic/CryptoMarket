@@ -2,9 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { type NavigationScreenProp } from 'react-navigation';
-import { Button, Searchbar } from 'react-native-paper';
+import { Searchbar } from 'react-native-paper';
 
-import { logout } from '@services/auth/authActions';
 import { getUserInfoId, getUserAccountId } from '@services/user/userSelectors';
 import {
   getSymbols,
@@ -95,8 +94,6 @@ class SymbolsScreen extends Component<Props, State> {
             />
           </Box>
         </LoadingContainer>
-        {/* $FlowFixMe */}
-        <Button onPress={() => this.props.logout()}>Logout</Button>
       </Container>
     );
   }
@@ -111,7 +108,6 @@ const mapStateToProps = state => ({
 });
 
 const actions = {
-  logout,
   getSymbols,
   getWatchlist,
   addToWatchlist,
