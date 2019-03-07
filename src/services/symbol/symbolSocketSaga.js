@@ -8,6 +8,7 @@ import {
   put,
   takeEvery,
   cancel,
+  delay,
 } from 'redux-saga/effects';
 
 import { SOCKET_URL } from '../../config';
@@ -29,6 +30,9 @@ const createWebSocketChannel = webSocket => eventChannel((emit) => {
 
 function* receiveWebSocketMessage(webSocketChannel) {
   while (true) {
+    // debounce channel to take data from socket on every 1 second
+    // to get smoother rendering
+    yield delay(1000);
     const wsMessage = yield take(webSocketChannel);
     const { type, payload } = wsMessage;
 
