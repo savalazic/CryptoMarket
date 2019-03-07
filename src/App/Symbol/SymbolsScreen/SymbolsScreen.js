@@ -46,7 +46,9 @@ class SymbolsScreen extends Component<Props, State> {
 
   componentDidMount() {
     this.props.getSymbols(this.props.userId);
-    this.props.getWatchlist(this.props.userAccountId);
+    if (this.props.userAccountId) {
+      this.props.getWatchlist(this.props.userAccountId);
+    }
   }
 
   handlePressSymbol = (symbol: Symbol) => {
