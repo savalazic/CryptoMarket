@@ -64,8 +64,8 @@ class SymbolsScreen extends Component<Props, State> {
 
   filterSymbols = (symbols) => {
     const { searchQuery } = this.state;
-    // eslint-disable-next-line
-    return symbols.filter(symbol => symbol.displayName.toLowerCase().includes(searchQuery.toLowerCase()),);
+    return symbols
+      .filter(symbol => symbol.displayName.toLowerCase().includes(searchQuery.toLowerCase()));
   };
 
   render() {

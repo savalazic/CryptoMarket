@@ -24,6 +24,7 @@ import {
 import { type Symbols } from '@services/symbol/symbolTypes';
 import { getNews } from '@services/news/newsActions';
 import { getNewsSelector, getNewsLoading } from '@services/news/newsSelectors';
+import { type News } from '@services/news/newsTypes';
 
 import LoadingContainer from '@components/LoadingContainer';
 import Container from '@components/Container';
@@ -42,7 +43,7 @@ type Props = {
   getNews: (limit: number, offset: number) => void,
   isSymbolLoading: boolean,
   isNewsLoading: boolean,
-  news: any,
+  news: News[],
   getSymbolChartData: (userId: string, symbolId: string) => void,
   isChartDataLoading: boolean,
   symbolAskChartData: number[],
